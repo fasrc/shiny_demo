@@ -1,0 +1,7 @@
+FROM fasrc/centos7_httpd:latest
+
+ENV USERNAME="shiny"
+ENV PASSWORD="ro6Zai\v"
+ENV UID='1002'
+
+RUN adduser $USERNAME ; echo "$USERNAME:$PASSWORD" | chpasswd
