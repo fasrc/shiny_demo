@@ -1,0 +1,8 @@
+.DS_store
+*.csr
+*.crt
+*.key
+*.pem
+test/*
+passwd
+secret*

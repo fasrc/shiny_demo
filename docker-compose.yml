@@ -23,7 +23,10 @@ services:
     volumes:
       - ./10_shiny.conf:/etc/httpd/conf.d/000_default.conf
   shiny:
-    image: "fasrc/rshiny_pro_centos:latest"
+    build:
+      context: '.'
+      dockerfile: "Dockerfile.shiny"
+    image: "fasrc/rshiny_pro_centos:compose"
     labels:
       edu.harvard.fas.rc.description: "shiny r web frontend"
       edu.harvard.fas.rc.customer: "internal"
@@ -34,5 +37,6 @@ services:
      - "3838"
     expose:
      - "3838"
-    #environment:
-    #volumes:
+    volumes:
+      - ./shiny-server.conf:/etc/shiny-server/shiny-server.conf
+      - ./test:/srv/shiny-server/test

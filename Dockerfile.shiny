@@ -1,0 +1,5 @@
+FROM fasrc/rshiny_pro_centos:latest
+
+COPY secret.txt /etc/shiny-server/secret.txt
+RUN chown -fv root:root /etc/shiny-server/secret.txt && \
+    chmod 0600 /etc/shiny-server/secret.txt 
