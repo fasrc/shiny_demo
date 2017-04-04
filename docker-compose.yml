@@ -1,27 +1,14 @@
 ---
 version: '2'
 services:
-  apache:
-    build:
-      context: '.'
-      dockerfile: "Dockerfile.apache"
-    image: "centos7_httpd:latest"
-    labels:
-      edu.harvard.fas.rc.description: "simple apache config"
-      edu.harvard.fas.rc.customer: "internal"
-      edu.harvard.fas.rc.type: "web"
-      edu.harvard.fas.rc.database: "false"
-      edu.harvard.fas.rc.ticket: "99999999"
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
     ports:
-      - "443:443"
       - "80:80"
-    expose:
-      - "443"
-      - "80"
-    links:
-      - shiny
+      - "443:443"
     volumes:
-      - ./10_shiny.conf:/etc/httpd/conf.d/000_default.conf
+      - /var/run/docker.sock:/tmp/docker.sock:ro
   shiny:
     build:
       context: '.'
@@ -34,9 +21,10 @@ services:
       edu.harvard.fas.rc.database: "false"
       edu.harvard.fas.rc.ticket: "99999999"
     ports:
-     - "3838"
-    expose:
-     - "3838"
+      - "3838"
     volumes:
       - ./shiny-server.conf:/etc/shiny-server/shiny-server.conf
       - ./test:/srv/shiny-server/test
+    environment:
+      - VIRTUAL_HOST="192.168.99.100"
+      - VIRTUAL_PORT="3838"
